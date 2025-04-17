@@ -23,6 +23,7 @@ class _MapScreenState extends State<MapScreen> {
     fetchProjects();
   }
 
+//This method will fetch the project from firestore
   Future<void> fetchProjects() async {
     final snapshot =
         await FirebaseFirestore.instance.collection('projects').get();

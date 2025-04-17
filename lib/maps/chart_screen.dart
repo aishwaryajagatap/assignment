@@ -23,6 +23,7 @@ class _ChartPageState extends State<ChartPage> {
     fetchProjects();
   }
 
+//This method will fetch the project from firestore
   Future<void> fetchProjects() async {
     try {
       final snapshot =
