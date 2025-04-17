@@ -12,6 +12,7 @@ package="com.example.assignment"
         <activity
             android:name=".MainActivity"
             android:requestLegacyExternalStorage="true"
+            android:enableOnBackInvokedCallback="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""

@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, use_key_in_widget_constructors
 
 import 'package:assignment/helper/string_extension.dart';
-import 'package:assignment/project_screen.dart';
+
+import 'package:assignment/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -20,19 +22,45 @@ class _SignupScreenState extends State<SignupScreen> {
   /// On success, navigates to ProjectScreen.
   /// On failure, displays an error message using a SnackBar.
   Future<void> signup() async {
+    final email = emailCtrl.text.trim();
+    final password = passwordCtrl.text.trim();
+
+    // Basic email and password validation
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Email and password must not be empty")),
+      );
+      return;
+    }
+
+    if (!email.contains('@') || !email.contains('.')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter a valid email address")),
+      );
+      return;
+    }
+
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Password must be at least 6 characters")),
+      );
+      return;
+    }
+
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailCtrl.text,
-        password: passwordCtrl.text,
+        email: email,
+        password: password,
       );
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => ProjectScreen()),
+        MaterialPageRoute(builder: (_) => LoginScreen()),
       );
     } catch (e) {
-      // Show error if signup fails
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Signup Failed: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Signup Failed: $e")),
+      );
     }
   }
 
@@ -94,12 +122,19 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       // Password input
                       TextField(
+                        keyboardType: TextInputType.numberWithOptions(),
                         controller: passwordCtrl,
                         obscureText: true,
                         decoration: InputDecoration(labelText: "Password"),
+                        maxLength: 6,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
                       ),
 
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
 
                       // Sign up button
                       SizedBox(

@@ -50,7 +50,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
   }
 
   // Method to handle user logout
-  void logout() => AuthService.logout();
+  void logout() => AuthService.logout(context);
 
   @override
   Widget build(BuildContext context) {

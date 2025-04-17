@@ -6,6 +6,7 @@ import 'package:assignment/screens/forgot_password.dart';
 import 'package:assignment/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -90,19 +91,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Password input field
                       TextField(
+                        keyboardType: TextInputType.numberWithOptions(),
                         controller: passwordCtrl,
-                        decoration: const InputDecoration(labelText: 'Password'),
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
                         obscureText: true,
+                        maxLength: 6,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
                       ),
 
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
 
                       // Login button
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(Color(0xFF07429E)),
+                            backgroundColor:
+                                WidgetStateProperty.all(Color(0xFF07429E)),
                           ),
                           onPressed: login,
                           child: const Text(
@@ -117,11 +127,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextButton(
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => ForgotPasswordScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => ForgotPasswordScreen()),
                         ),
                         child: const Text(
                           "Forgot Password?",
-                          style: TextStyle(fontSize: 16, color: Color(0xFF07429E)),
+                          style:
+                              TextStyle(fontSize: 16, color: Color(0xFF07429E)),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -134,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: const Text(
                           "Don't have an account? Sign up",
-                          style: TextStyle(fontSize: 16, color: Color(0xFF07429E)),
+                          style:
+                              TextStyle(fontSize: 16, color: Color(0xFF07429E)),
                         ),
                       ),
                     ],
